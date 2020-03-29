@@ -4,13 +4,13 @@ var dayCounter = document.getElementById("dayCounter")
 
 var actors = []
 var agentCount = 1500
-var infectionRate = 0.5
-var deathRate = 0.02
+var infectionRate = 0.1
+var deathRate = 0.01
 var healingTime = 40
-var infectionRadius = 20
+var infectionRadius = 30
 var resistanceDuration = 10
 var socialDistancing = 5 //TODO how????
-var quarantineDelay = 5
+var quarantineDelay = 20
 
 var totalTime = 0
 var fatalities = []
@@ -60,8 +60,8 @@ function startSimulation() {
       y: Math.random() * canvas.height,
       resistanceTimer: 0,
       infectionTimer: 0,
-      vx: (Math.random() - 0.5),
-      vy: (Math.random() - 0.5),
+      vx: Math.random() - 0.5,
+      vy: Math.random() - 0.5,
       dead: false
     })
   }
@@ -69,13 +69,15 @@ function startSimulation() {
 }
 
 function updateSimulation(steps) {
+  var newInfections = 0
+
   for (var i = 0; i < actors.length; i++) {
     var a = actors[i]
     //move everyone around
     a.x += a.vx * steps * socialDistancing
     a.y += a.vy * steps * socialDistancing
-    a.y = a.y % canvas.height
-    a.x = a.x % canvas.width
+    a.y = (a.y + canvas.height) % canvas.height
+    a.x = (a.x + canvas.width) % canvas.width
 
     //infect everyone
     if (a.infectionTimer > 0) {
@@ -84,7 +86,10 @@ function updateSimulation(steps) {
         if (Math.abs(t.x - a.x) < infectionRadius)
           if (Math.abs(t.y - a.y) < infectionRadius)
             if (t.infectionTimer == 0 && t.resistanceTimer == 0)
-              t.infectionTimer = 1
+              if (Math.random() < infectionRate) {
+                t.infectionTimer = 1
+                newInfections++
+              }
 
       }
 
@@ -132,6 +137,8 @@ function updateSimulation(steps) {
   quarantine = quarantine.filter((el) => el.infectionTimer != 0);
 
   totalTime += steps
+
+  addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer>0).length)
 }
 
 function animate() {
@@ -176,7 +183,7 @@ function qdraw(ctx) {
 
   for (var i = 0; i < quarantine.length; i++) {
     ctx.fillStyle = "hsl(" + quarantine[i].infectionTimer * 120 / healingTime + ",100%,50%)"
-    ctx.fillRect((i*11)%qcanvas.width, Math.floor((i*11)/qcanvas.width)*11, 10, 10);
+    ctx.fillRect((i * 11) % qcanvas.width, Math.floor((i * 11) / qcanvas.width) * 11, 10, 10);
   }
 }
 

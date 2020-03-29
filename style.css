@@ -1,14 +1,19 @@
 canvas {
   width: 80%;
-  width: calc(100% - 1rem);
+  width: calc(100vmin - 3rem);
   height: auto;
   margin: 0.5rem;
   border: solid black;
 }
 
-.row{
-  width: 60%;
+.sliderRow{
+  width: 80vmin;
   display: flex;
+}
+
+.chartRow{
+  width: 80%;
+  width: calc(100vmin - 3rem);
 }
 
 .valueSlider{
