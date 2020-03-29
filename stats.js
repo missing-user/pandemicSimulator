@@ -5,7 +5,7 @@ var chart = new Chart(ctx, {
 
   // The data for our dataset
   data: {
-    labels: _.range(1),
+    labels: [1],
     datasets: [{
       label: 'new infections',
       data: 1
@@ -16,42 +16,46 @@ var chart = new Chart(ctx, {
   },
 
   // Configuration options go here
-  options: {}
+  options: {
+    animation: false
+  }
 });
 
 var imuneStats = []
 var qurantineStats = []
 var deaths = []
 var infections = []
+var dayLabels = [1]
 
-function addPoints(newi, dead, quarantined, imune) {
+function addPoints(newi, dead, quarantined, imune, day) {
   infections.push(newi)
   deaths.push(dead)
   qurantineStats.push(quarantined)
   imuneStats.push(imune)
+  dayLabels.push(day)
 
   updateData()
 }
 
 function updateData() {
   chart.data = {
-    labels: _.range(infections.length),
+    labels: dayLabels,
     datasets: [{
       label: 'new infections',
       data: infections,
-			borderColor: "red"
+      borderColor: "red"
     }, {
       label: 'death count',
       data: deaths,
-			borderColor: "black"
+      borderColor: "black"
     }, {
       label: 'in quarantine',
       data: qurantineStats,
-			borderColor: "yellow"
+      borderColor: "yellow"
     }, {
       label: 'imune',
       data: imuneStats,
-			borderColor: "rgb(0,255,0)"
+      borderColor: "rgb(0,255,0)"
     }, ]
   }
 

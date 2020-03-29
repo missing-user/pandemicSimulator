@@ -138,7 +138,8 @@ function updateSimulation(steps) {
 
   totalTime += steps
 
-  addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer>0).length)
+  if ((totalTime % 20)==0)
+    addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer > 0).length, totalTime)
 }
 
 function animate() {
