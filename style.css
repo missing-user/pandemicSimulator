@@ -22,7 +22,7 @@ canvas {
   appearance: none;
   height: 0.5rem; /* Specified height */
   margin: 0.7rem 0 0.9rem 0;
-  background: #d3d3d3;
+  background: gray;
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
