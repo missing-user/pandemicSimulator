@@ -6,7 +6,7 @@
   <title>Pandemic</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+  <!--<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>-->
 </head>
 
 <body>
@@ -49,7 +49,7 @@
 
     <label for="resistanceSlider">duration of immunity after recovery</label>
     <div class="sliderRow">
-      <input type="range" class="valueSlider" value="10" min="1" max="100" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
+      <input type="range" class="valueSlider" value="10" min="1" max="500" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
       <output id="resistanceValue">10</output>
     </div>
 

@@ -70,6 +70,7 @@ function startSimulation() {
 
 function updateSimulation(steps) {
   var newInfections = 0
+  healthy = actors.filter((el) => el.infectionTimer == 0 && el.resistanceTimer == 0);
 
   for (var i = 0; i < actors.length; i++) {
     var a = actors[i]
@@ -80,18 +81,16 @@ function updateSimulation(steps) {
     a.x = (a.x + canvas.width) % canvas.width
 
     //infect everyone
+
     if (a.infectionTimer > 0) {
-      for (var j = 0; j < actors.length; j++) {
-        var t = actors[j]
+      //infect everyone
+      for (var t of healthy)
         if (Math.abs(t.x - a.x) < infectionRadius)
           if (Math.abs(t.y - a.y) < infectionRadius)
-            if (t.infectionTimer == 0 && t.resistanceTimer == 0)
-              if (Math.random() < infectionRate) {
-                t.infectionTimer = 1
-                newInfections++
-              }
-
-      }
+            if (Math.random() < infectionRate) {
+              t.infectionTimer = 1
+              newInfections++
+            }
 
       if (a.infectionTimer > quarantineDelay)
         quarantine.push(a)
@@ -138,7 +137,7 @@ function updateSimulation(steps) {
 
   totalTime += steps
 
-  if ((totalTime % 20)==0)
+  if ((totalTime % 20) == 0)
     addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer > 0).length, totalTime)
 }
 
