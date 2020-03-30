@@ -1,6 +1,7 @@
 var canvas = document.getElementById("canvas")
 var qcanvas = document.getElementById("qcanvas")
 var dayCounter = document.getElementById("dayCounter")
+var statsCheck = document.getElementById("statsCheck")
 
 var actors = []
 var agentCount = 1500
@@ -138,7 +139,7 @@ function updateSimulation(steps) {
 
   totalTime += steps
 
-  if ((totalTime % 20) == 0)
+  if ((totalTime % 20) == 0 && statsCheck.checked)
     addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer > 0).length, totalTime)
 }
 
