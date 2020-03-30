@@ -13,7 +13,8 @@
   <h1>Corona simulation</h1>
   <h2 id="dayCounter">day: 2</h2>
   <canvas id="canvas" width="1000" height="1000"></canvas>
-  <canvas id="qcanvas" width="1000" height="100"></canvas>
+  <h2>quarantine</h2>
+<canvas id="qcanvas" width="1000" height="100"></canvas>
 
 
   <form class="" action="index.html" method="post">
@@ -53,7 +54,7 @@
       <output id="resistanceValue">10</output>
     </div>
 
-    <label for="distancingSlider">social distancing</label>
+    <label for="distancingSlider">travel speed</label>
     <div class="sliderRow">
       <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="distancingSlider" onchange="updateDistancing(this.value)" oninput="distancingValue.value = this.value">
       <output id="distancingValue">0</output>
