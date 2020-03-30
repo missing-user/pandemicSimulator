@@ -66,6 +66,7 @@ function startSimulation() {
     })
   }
   actors[0].infectionTimer = 1
+  resetStats()
 }
 
 function updateSimulation(steps) {

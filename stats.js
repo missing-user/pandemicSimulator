@@ -37,6 +37,14 @@ function addPoints(newi, dead, quarantined, imune, day) {
   updateData()
 }
 
+function resetStats(){
+  imuneStats = []
+  qurantineStats = []
+  deaths = []
+  infections = []
+  dayLabels = [1]
+}
+
 function updateData() {
   chart.data = {
     labels: dayLabels,
