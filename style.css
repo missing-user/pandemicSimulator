@@ -16,12 +16,56 @@ canvas {
   width: calc(100vmin - 3rem);
 }
 
+li::before {
+  content: "";
+  background-color: green;
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  line-height: 1rem;
+  text-align: center;
+  margin-right: 0.5rem;
+}
+
+.dead::before{
+  background-color: black;
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: rgb(0,255,0);
+  }
+  100% {
+    background-color: green;
+  }
+}
+
+.imm::before{
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 1, 1);
+}
+
+@keyframes danger {
+  0% {
+    background-color: red;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+
+.inf::before{
+              outline: 1px solid red;
+              outline-offset: 4px;
+  animation: danger 1.5s infinite cubic-bezier(0.4, 0, 1, 1);
+}
+
 .valueSlider{
   flex-grow: 1;
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
-  height: 0.5rem; /* Specified height */
-  margin: 0.7rem 0 0.9rem 0;
+  height: 1rem; /* Specified height */
+  margin: 1.4rem 0 1.8rem 0;
   background: gray;
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
@@ -36,16 +80,16 @@ canvas {
 .valueSlider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 1rem; /* Set a specific slider handle width */
-  height: 1rem; /* Slider handle height */
+  width: 1.4rem; /* Set a specific slider handle width */
+  height: 1.4rem; /* Slider handle height */
   border-radius: 50%;
   background: green;
   cursor: pointer; /* Cursor on hover */
 }
 
 .valueSlider::-moz-range-thumb {
-  width: 1rem; /* Set a specific slider handle width */
-  height: 1rem; /* Slider handle height */
+  width: 1.4rem; /* Set a specific slider handle width */
+  height: 1.4rem; /* Slider handle height */
   border-radius: 50%;
   background: green;
   cursor: pointer;
