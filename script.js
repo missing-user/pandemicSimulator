@@ -140,7 +140,7 @@ function updateSimulation(steps) {
 
   totalTime += steps
 
-  if ((totalTime % 20) == 0 && statsCheck.checked)
+  if ((totalTime % 5) == 0 && statsCheck.checked)
     addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer > 0).length, totalTime)
   activeTimeout = window.setTimeout(updateSimulation, tickrate, 1)
 }
