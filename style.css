@@ -1,19 +1,42 @@
-canvas {
-  width: 80%;
-  width: calc(100vmin - 3rem);
-  height: auto;
-  margin: 0.5rem;
-  border: solid black;
+:root {
+  --background: white;
 }
 
-.sliderRow{
-  width: 80vmin;
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background, white)
+}
+
+canvas {
+  flex-grow: 1;
+  background-color: var(--background, white);
+}
+
+#qcanvas {
+  border-left: 1px solid black;
+}
+
+#cont {
+  width: 100%;
+  height: auto;
+  flex-grow: 2;
+  display: flex;
+  flex-direction: row
+}
+
+.sliderRow {
+  width: 95vw;
   display: flex;
 }
 
-.chartRow{
-  width: 80%;
-  width: calc(100vmin - 3rem);
+.chartRow {
+  width: 100%;
 }
 
 li::before {
@@ -27,21 +50,21 @@ li::before {
   margin-right: 0.5rem;
 }
 
-.dead::before{
+.dead::before {
   background-color: black;
 }
 
-
 @keyframes pulse {
   0% {
-    background-color: rgb(0,255,0);
+    background-color: rgb(0, 255, 0);
   }
+
   100% {
     background-color: green;
   }
 }
 
-.imm::before{
+.imm::before {
   animation: pulse 2s infinite cubic-bezier(0.4, 0, 1, 1);
 }
 
@@ -49,48 +72,18 @@ li::before {
   0% {
     background-color: red;
   }
+
   100% {
     background-color: yellow;
   }
 }
 
-.inf::before{
-              outline: 1px solid red;
-              outline-offset: 4px;
+.inf::before {
+  outline: 1px solid red;
+  outline-offset: 4px;
   animation: danger 1.5s infinite cubic-bezier(0.4, 0, 1, 1);
 }
 
-.valueSlider{
+.valueSlider {
   flex-grow: 1;
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  height: 1rem; /* Specified height */
-  margin: 1.4rem 0 1.8rem 0;
-  background: gray;
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
-
-.valueSlider:hover {
-  opacity: 1;
-}
-
-.valueSlider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 1.4rem; /* Set a specific slider handle width */
-  height: 1.4rem; /* Slider handle height */
-  border-radius: 50%;
-  background: green;
-  cursor: pointer; /* Cursor on hover */
-}
-
-.valueSlider::-moz-range-thumb {
-  width: 1.4rem; /* Set a specific slider handle width */
-  height: 1.4rem; /* Slider handle height */
-  border-radius: 50%;
-  background: green;
-  cursor: pointer;
 }

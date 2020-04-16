@@ -16,6 +16,8 @@ var quarantineDelay = 20
 var totalTime = 0
 var fatalities = []
 var quarantine = []
+var tickrate = 250
+var activeTimeout
 
 function updateAgents(input) {
   agentCount = input
@@ -68,19 +70,18 @@ function startSimulation() {
   }
   actors[0].infectionTimer = 1
   resetStats()
+  clearTimeout(activeTimeout)
+  updateSimulation(1)
 }
 
 function updateSimulation(steps) {
   var newInfections = 0
   healthy = actors.filter((el) => el.infectionTimer == 0 && el.resistanceTimer == 0);
+  if (healthy.length == actors.length)
+    startSimulation()
 
   for (var i = 0; i < actors.length; i++) {
     var a = actors[i]
-    //move everyone around
-    a.x += a.vx * steps * socialDistancing
-    a.y += a.vy * steps * socialDistancing
-    a.y = (a.y + canvas.height) % canvas.height
-    a.x = (a.x + canvas.width) % canvas.width
 
     //infect everyone
 
@@ -141,11 +142,20 @@ function updateSimulation(steps) {
 
   if ((totalTime % 20) == 0 && statsCheck.checked)
     addPoints(newInfections, fatalities.length, quarantine.length, actors.filter((el) => el.resistanceTimer > 0).length, totalTime)
+  activeTimeout = window.setTimeout(updateSimulation, tickrate, 1)
 }
 
 function animate() {
+  for (var i = 0; i < actors.length; i++) {
+    var a = actors[i]
+    //move everyone around
+    a.x += a.vx * socialDistancing
+    a.y += a.vy * socialDistancing
+    a.y = (a.y + canvas.height) % canvas.height
+    a.x = (a.x + canvas.width) % canvas.width
+  }
+
   requestAnimationFrame(animate)
-  updateSimulation(1)
 
   draw(canvas.getContext("2d"))
   qdraw(qcanvas.getContext("2d"))
@@ -154,6 +164,9 @@ function animate() {
 }
 
 function draw(ctx) {
+  canvas.getContext("2d").canvas.width = document.getElementById("cont").offsetWidth * 0.618;
+  canvas.getContext("2d").canvas.height = document.getElementById("cont").offsetHeight;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   ctx.fillStyle = "black"
@@ -181,11 +194,14 @@ function draw(ctx) {
 }
 
 function qdraw(ctx) {
+  qcanvas.getContext("2d").canvas.width = document.getElementById("cont").offsetWidth * 0.382;
+  qcanvas.getContext("2d").canvas.height = document.getElementById("cont").offsetHeight;
+
   ctx.clearRect(0, 0, qcanvas.width, qcanvas.height)
 
   for (var i = 0; i < quarantine.length; i++) {
     ctx.fillStyle = "hsl(" + quarantine[i].infectionTimer * 120 / healingTime + ",100%,50%)"
-    ctx.fillRect((i * 11) % qcanvas.width, Math.floor((i * 11) / qcanvas.width) * 11, 10, 10);
+    ctx.fillRect(Math.floor(((i * 15) % qcanvas.width) / 15) * 15, Math.floor((i * 15) / qcanvas.width) * 15, 10, 10);
   }
 }
 
