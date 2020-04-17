@@ -1,5 +1,3 @@
-importScripts('quadtree.js');
-
 var myTree
 
 function distance(actors) {
@@ -31,7 +29,7 @@ function distance(actors) {
 
 onmessage = function(e) {
   console.log('Message received from main script', e);
-  myTree = new Quadtree(e.data.bounds)
+  myTree =e.data.tree
   distance(e.data.actors)
   postMessage(e.data.actors);
 }

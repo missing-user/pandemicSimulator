@@ -93,9 +93,11 @@ function startSimulation() {
 
   if (window.Worker) {
     console.log('starting distancing thread');
+    if (myWorker)
+      myWorker.terminate();
     myWorker = new Worker('distancing.js');
     myWorker.postMessage({
-      bounds: myTree.bounds,
+      tree: myTree,
       actors: actors
     });
 
