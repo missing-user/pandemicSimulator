@@ -27,13 +27,13 @@ var deaths = []
 var infections = []
 var dayLabels = [1]
 
-function addPoints(newi, dead, quarantined, imune, day) {
+function addPoints(newi,total, dead, quarantined, imune, day) {
   infections.push(newi)
   deaths.push(dead)
   qurantineStats.push(quarantined)
   imuneStats.push(imune)
   dayLabels.push(day)
-
+  tinfections.push(total+quarantined)
   updateData()
 }
 
@@ -42,6 +42,7 @@ function resetStats(){
   qurantineStats = []
   deaths = []
   infections = []
+  tinfections = []
   dayLabels = [1]
 }
 
@@ -51,6 +52,10 @@ function updateData() {
     datasets: [{
       label: 'new infections',
       data: infections,
+      borderColor: "purple"
+    }, {
+      label: 'total infections',
+      data: tinfections,
       borderColor: "red"
     }, {
       label: 'death count',

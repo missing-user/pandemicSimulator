@@ -34,7 +34,7 @@
   <form class="" action="index.html" method="post">
     <label for="agentSlider">number of agents</label>
     <div class="sliderRow">
-      <input type="range" class="valueSlider" value="1500" min="10" max="10000" step="5" id="agentSlider" onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
+      <input type="range" class="valueSlider" value="1500" min="10" max="25000" step="5" id="agentSlider" onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
       <output id="agentValue">1500</output>
     </div>
 
@@ -52,7 +52,7 @@
 
     <label for="recoverySlider">recovery time</label>
     <div class="sliderRow">
-      <input type="range" class="valueSlider" value="40" min="1" max="100" step="1" id="recoverySlider" onchange="updateRecovery(this.value)" oninput="recoveryValue.value = this.value">
+      <input type="range" class="valueSlider" value="40" min="1" max="365" step="1" id="recoverySlider" onchange="updateRecovery(this.value)" oninput="recoveryValue.value = this.value">
       <output id="recoveryValue">40</output>
     </div>
 
@@ -62,9 +62,21 @@
       <output id="radiusValue">30</output>
     </div>
 
+    <label for="sradiusSlider">social distancing radius</label>
+    <div class="sliderRow">
+      <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="sradiusSlider" onchange="distancingRadius = this.value" oninput="sradiusValue.value = this.value">
+      <output id="sradiusValue">20</output>
+    </div>
+
+    <label for="strengthSlider">social distancing strength</label>
+    <div class="sliderRow">
+      <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="strengthSlider" onchange="distancingStrength = this.value" oninput="strengthValue.value = this.value">
+      <output id="strengthValue">0</output>
+    </div>
+
     <label for="resistanceSlider">duration of immunity after recovery</label>
     <div class="sliderRow">
-      <input type="range" class="valueSlider" value="10" min="1" max="500" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
+      <input type="range" class="valueSlider" value="10" min="1" max="365" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
       <output id="resistanceValue">10</output>
     </div>
 
@@ -95,6 +107,7 @@
     </div>
 </body>
 
+<script src="quadtree.js"></script>
 <script src="stats.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
