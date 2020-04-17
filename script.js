@@ -20,7 +20,6 @@ var fatalities = []
 var quarantine = []
 var tickrate = 250
 var activeTimeout
-var myWorker
 
 var myTree = new Quadtree({
   x: 0,
@@ -90,23 +89,6 @@ function startSimulation() {
   clearTimeout(activeTimeout)
   activeTimeout = window.setTimeout(updateSimulation, tickrate, 1)
   console.log('sim started with timer: ', activeTimeout);
-
-  if (window.Worker) {
-    console.log('starting distancing thread');
-    if (myWorker)
-      myWorker.terminate();
-    myWorker = new Worker('distancing.js');
-    myWorker.postMessage({
-      tree: myTree,
-      actors: actors
-    });
-
-    myWorker.onmessage = function(e) {
-      console.log('Message received from worker', e);
-      if (e.data == actors)
-        console.log("nothing happened");
-    }
-  }
 }
 
 function updateSimulation(steps) {
@@ -194,6 +176,9 @@ function updateSimulation(steps) {
 }
 
 function animate() {
+
+  distance()
+
   for (var i = 0; i < actors.length; i++) {
     var a = actors[i]
     //move everyone around
@@ -211,7 +196,33 @@ function animate() {
   dayCounter.textContent = "day: " + totalTime
 }
 
+function distance() {
+  if (distancingStrength > 0) {
+    myTree.clear();
+    //update myObjects and insert them into the tree again
 
+    for (var actor of actors) {
+      myTree.insert(actor)
+    }
+
+
+    for (var actor of actors) {
+      var candidates = myTree.retrieve(actor);
+      for (var cand of candidates) {
+        /*if (Math.abs(actor.x - cand.x) < distancingRadius)
+          if (Math.abs(actor.y - cand.y) < distancingRadius)*/
+        dist = Math.sqrt((cand.x - actor.x) * (cand.x - actor.x) + (cand.y - actor.y) * (cand.y - actor.y))
+        if (dist < distancingRadius) {
+          dist = Math.max(dist, 0.001)
+          actor.vx += (actor.x - cand.x) * distancingStrength / dist
+          actor.vy += (actor.y - cand.y) * distancingStrength / dist
+        }
+      }
+      actor.vx = Math.max(Math.min(actor.vx, 0.5), -0.5)
+      actor.vy = Math.max(Math.min(actor.vy, 0.5), -0.5)
+    }
+  }
+}
 
 function reportWindowSize() {
   canvas.getContext("2d").canvas.width = document.getElementById("cont").offsetWidth * 0.618;
@@ -256,6 +267,15 @@ function draw(ctx) {
     ctx.fillRect(actors[i].x - 5, actors[i].y - 5, 10, 10);
   }
   ctx.stroke()
+
+
+  if (distancingStrength > 0) {
+    ctx.strokeStyle = "yellow"
+    for (var i = 0; i < actors.length; i++)
+      ctx.rect(actors[i].x - (distancingRadius / 2), actors[i].y - (distancingRadius / 2), distancingRadius, distancingRadius)
+
+    ctx.stroke()
+  }
 }
 
 function qdraw(ctx) {
