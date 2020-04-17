@@ -101,7 +101,7 @@ function startSimulation() {
 
     myWorker.onmessage = function(e) {
       console.log('Message received from worker', e);
-      if (e == actors)
+      if (e.data == actors)
         console.log("nothing happened");
     }
   }
