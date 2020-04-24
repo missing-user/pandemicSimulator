@@ -72,9 +72,7 @@
 
       <div class="row">
         <div class="one-half column">
-
           <label for="radiusSlider">infection radius</label>
-
           <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="radiusSlider" onchange="updateRadius(this.value)" oninput="radiusValue.value = this.value">
           <output id="radiusValue">20</output>
         </div>
@@ -110,18 +108,14 @@
           <output id="quarantineValue">20</output>
         </div>
       </div>
-
       <div class="row">
-        <div class="column">
+        <div class="one-half column">
           <label for="tickslider">time between simulation steps in ms</label>
           <input type="range" class="valueSlider" value="200" min="5" max="1000" step="1" id="tickslider" onchange="tickrate = this.value" oninput="ticks.value = this.value">
           <output id="ticks">200</output>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="column">
-          <button type="button" name="stats toggle" onclick="stats = !stats">toggle stats</button>
+        <div class="one-half column">
+          <button class="u-full-width" type="button" name="stats toggle" onclick="stats = !stats">toggle stats</button>
         </div>
       </div>
 
