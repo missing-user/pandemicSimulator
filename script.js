@@ -217,9 +217,12 @@ function draw(ctx) {
 	}
 	ctx.stroke()
 	if (distancingStrength > 0) {
+		ctx.beginPath()
 		ctx.strokeStyle = "yellow"
+		ctx.globalAlpha = distancingStrength
 		for (var i = 0; i < actors.length; i++) ctx.rect(actors[i].x - (distancingRadius / 2), actors[i].y - (distancingRadius / 2), distancingRadius, distancingRadius)
 		ctx.stroke()
+		ctx.globalAlpha = 1
 	}
 }
 
