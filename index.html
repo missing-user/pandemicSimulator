@@ -1,114 +1,140 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-<head>
-  <meta charset="utf-8">
-  <title>Pandemic</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <!--<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>-->
-</head>
+  <head>
+    <meta charset="utf-8">
+    <title>Pandemic</title>
+    <!-- MOBILE––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- CSS––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/darkskelleton.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  </head>
 
-<body>
-  <h1>Corona simulation</h1>
+  <body>
 
-  <p>As an explanation to what is going on here: each dot represents a human entity, going about their life.</p>
+    <div class="container">
+      <div class="row" style="margin-top:3rem;">
+        <div class="column">
+          <h1>Corona simulation</h1>
+          <h3>Introduction</h3>
+          <p>What is going on here: each dot represents a human entity, going about their life.</p>
+          <ul style="list-style:none;">
+            <li>this is a healthy human</li>
+            <li class="inf">infected and spreading the disease</li>
+            <li class="imm">immune human, but only for a while</li>
+            <li class="dead">dead human, rest in peace</li>
+          </ul>
+          <p>People in the big box are part of society, while the smaller box represents quarantined people. Quarantine is being triggered a few days after the infection, because it takes some time to detect an infected person. Have fun playing with this and
+            stay safe!</p>
+          <h3 id="dayCounter">day: 2</h3>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="two-thirds column">
+          <canvas id="canvas" width="666" height="1000"></canvas>
+        </div>
+        <div class="one-third column">
+          <canvas id="qcanvas" width="334" height="1000"></canvas>
+        </div>
+      </div>
 
-  <ul style="list-style:none;">
-    <li>this is a healthy human</li>
-    <li class="inf">infected and spreading the disease</li>
-    <li class="imm">immune human, but only for a while</li>
-    <li class="dead">dead human, rest in peace</li>
-  </ul>
-  <p>People in the big box are part of society, while the smaller box represents quarantined people. Quarantine is being triggered a few days after the infection, because it takes some time to detect an infected person. Have fun playing with this and stay safe!</p>
-  <h2 id="dayCounter">day: 2</h2>
- <button type="button" name="start simulation" onclick="startSimulation()">start simulation</button>
+      <div class="row">
+        <div class="one-half column">
+          <label for="agentSlider">number of agents</label>
+          <input type="range" class="valueSlider" value="1500" min="10" max="5000" step="5" id="agentSlider" onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
+          <output id="agentValue">1500</output>
+        </div>
+        <div class="one-half column">
+          <label for="infectionSlider">infection rate</label>
+          <input type="range" class="valueSlider" value="0.1" min="0.01" max="1" step="0.01" id="infectionSlider" onchange="updateInfection(this.value)" oninput="infectionValue.value = this.value">
+          <output id="infectionValue">0.1</output>
+        </div>
+      </div>
 
-<div id="cont">
-  <canvas id="canvas" width="1000" height="1000"></canvas>
-  <canvas id="qcanvas" width="100" height="1000"></canvas>
-</div>
-<br><br><br>
+      <div class="row">
+        <div class="one-half column">
+          <label for="resistanceSlider">duration of immunity after recovery</label>
+          <input type="range" class="valueSlider" value="10" min="1" max="365" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
+          <output id="resistanceValue">10</output>
+        </div>
+        <div class="one-half column">
+          <label for="recoverySlider">recovery time</label>
+          <input type="range" class="valueSlider" value="40" min="1" max="365" step="1" id="recoverySlider" onchange="updateRecovery(this.value)" oninput="recoveryValue.value = this.value">
+          <output id="recoveryValue">40</output>
+        </div>
+      </div>
 
-  <form class="" action="index.html" method="post">
-    <label for="agentSlider">number of agents</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="1500" min="10" max="5000" step="5" id="agentSlider" onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
-      <output id="agentValue">1500</output>
+      <div class="row">
+        <div class="one-half column">
+
+          <label for="radiusSlider">infection radius</label>
+
+          <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="radiusSlider" onchange="updateRadius(this.value)" oninput="radiusValue.value = this.value">
+          <output id="radiusValue">20</output>
+        </div>
+        <div class="one-half column">
+          <label for="deathSlider">death rate</label>
+          <input type="range" class="valueSlider" value="0.01" min="0.0" max="0.5" step="0.01" id="deathSlider" onchange="updateDeath(this.value)" oninput="deathValue.value = this.value">
+          <output id="deathValue">0.01</output>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column">
+          <label for="sradiusSlider">social distancing radius</label>
+          <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="sradiusSlider" onchange="distancingRadius = this.value" oninput="sradiusValue.value = this.value">
+          <output id="sradiusValue">20</output>
+        </div>
+        <div class="one-half column">
+          <label for="strengthSlider">social distancing strength</label>
+          <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="strengthSlider" onchange="distancingStrength = this.value" oninput="strengthValue.value = this.value">
+          <output id="strengthValue">0</output>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column">
+          <label for="distancingSlider">travel speed</label>
+          <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="distancingSlider" onchange="updateDistancing(this.value)" oninput="distancingValue.value = this.value">
+          <output id="distancingValue">0</output>
+        </div>
+        <div class="one-half column">
+          <label for="quarantineSlider">delay from infection to quarantine</label>
+          <input type="range" class="valueSlider" value="20" min="0" max="50" step="1" id="quarantineSlider" onchange="updateQuarantine(this.value)" oninput="quarantineValue.value = this.value">
+          <output id="quarantineValue">20</output>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column">
+          <label for="tickslider">time between simulation steps in ms</label>
+          <input type="range" class="valueSlider" value="200" min="5" max="1000" step="1" id="tickslider" onchange="tickrate = this.value" oninput="ticks.value = this.value">
+          <output id="ticks">200</output>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column">
+          <button type="button" name="stats toggle" onclick="stats = !stats">toggle stats</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
     </div>
+  </body>
 
-    <label for="infectionSlider">infection rate</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="0.1" min="0.01" max="1" step="0.01" id="infectionSlider" onchange="updateInfection(this.value)" oninput="infectionValue.value = this.value">
-      <output id="infectionValue">0.1</output>
-    </div>
-
-    <label for="deathSlider">death rate</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="0.01" min="0.0" max="0.5" step="0.01" id="deathSlider" onchange="updateDeath(this.value)" oninput="deathValue.value = this.value">
-      <output id="deathValue">0.01</output>
-    </div>
-
-    <label for="recoverySlider">recovery time</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="40" min="1" max="365" step="1" id="recoverySlider" onchange="updateRecovery(this.value)" oninput="recoveryValue.value = this.value">
-      <output id="recoveryValue">40</output>
-    </div>
-
-    <label for="radiusSlider">infection radius</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="30" min="1" max="60" step="1" id="radiusSlider" onchange="updateRadius(this.value)" oninput="radiusValue.value = this.value">
-      <output id="radiusValue">30</output>
-    </div>
-
-    <label for="sradiusSlider">social distancing radius</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="sradiusSlider" onchange="distancingRadius = this.value" oninput="sradiusValue.value = this.value">
-      <output id="sradiusValue">20</output>
-    </div>
-
-    <label for="strengthSlider">social distancing strength</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="strengthSlider" onchange="distancingStrength = this.value" oninput="strengthValue.value = this.value">
-      <output id="strengthValue">0</output>
-    </div>
-
-    <label for="resistanceSlider">duration of immunity after recovery</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="10" min="1" max="365" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
-      <output id="resistanceValue">10</output>
-    </div>
-
-    <label for="distancingSlider">travel speed</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="distancingSlider" onchange="updateDistancing(this.value)" oninput="distancingValue.value = this.value">
-      <output id="distancingValue">0</output>
-    </div>
-
-    <label for="quarantineSlider">delay from infection to quarantine</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="20" min="0" max="50" step="1" id="quarantineSlider" onchange="updateQuarantine(this.value)" oninput="quarantineValue.value = this.value">
-      <output id="quarantineValue">20</output>
-    </div>
-
-    <label for="tickslider">time between simulation steps in ms</label>
-    <div class="sliderRow">
-      <input type="range" class="valueSlider" value="200" min="5" max="1000" step="1" id="tickslider" onchange="tickrate = this.value" oninput="ticks.value = this.value">
-      <output id="ticks">200</output>
-    </div>
-  </form>
-
-  <input type="checkbox" checked id="statsCheck" name="stats checkbox" value="true">
-  <label for="statsCheck"> activate stats</label><br>
-
-    <div class="chartRow">
-      <canvas id="chart"></canvas>
-    </div>
-</body>
-
-<script src="quadtree.js"></script>
-<script src="stats.js"></script>
-<script type="text/javascript" src="script.js"></script>
+  <script src="quadtree.js"></script>
+  <script src="stats.js"></script>
+  <script type="text/javascript" src="script.js"></script>
 
 </html>
