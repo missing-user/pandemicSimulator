@@ -1,145 +1,158 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-  <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-179475953-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-179475953-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
 
-      gtag('config', 'UA-179475953-1');
-    </script>
-    <meta charset="utf-8">
-    <title>Pandemic</title>
-    <!-- MOBILE––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- CSS––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/darkskelleton.css" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="css/style.css">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>-->
-  </head>
+    gtag('config', 'UA-179475953-1');
+  </script>
+  <meta charset="utf-8">
+  <title>Pandemic</title>
+  <!-- MOBILE––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- CSS––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/darkskelleton.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="css/style.css">
+</head>
 
-  <body>
+<body>
 
-    <div class="container">
-      <div class="row" style="margin-top:3rem;">
-        <div class="column">
-          <h1>Corona simulation</h1>
-          <h3>Introduction</h3>
-          <p>What is going on here: each dot represents a human entity, going about their life.</p>
-          <ul style="list-style:none;">
-            <li>this is a healthy human</li>
-            <li class="inf">infected and spreading the disease</li>
-            <li class="imm">immune human, but only for a while</li>
-            <li class="dead">dead human, rest in peace</li>
-          </ul>
-          <p>People in the big box are part of society, while the smaller box represents quarantined people. Quarantine is being triggered a few days after the infection, because it takes some time to detect an infected person. Have fun playing with this and
-            stay safe!</p>
-          <hr>
-          <h3 id="dayCounter">day: 2</h3>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="two-thirds column">
-          <canvas class="u-full-width" id="canvas" width="666" height="1000"></canvas>
-        </div>
-        <div class="one-third column">
-          <canvas class="u-full-width" id="qcanvas" width="334" height="1000"></canvas>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="1500" min="10" max="5000" step="5" id="agentSlider" onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
-          <label for="agentSlider">number of agents</label>
-          <output id="agentValue" class="u-pull-right">1500</output>
-        </div>
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="0.1" min="0.01" max="1" step="0.01" id="infectionSlider" onchange="updateInfection(this.value)" oninput="infectionValue.value = this.value">
-          <label for="infectionSlider">infection rate</label>
-          <output id="infectionValue" class="u-pull-right">0.1</output>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="10" min="1" max="365" step="1" id="resistanceSlider" onchange="updateResistance(this.value)" oninput="resistanceValue.value = this.value">
-          <label for="resistanceSlider">duration of immunity after recovery</label>
-          <output id="resistanceValue" class="u-pull-right">10</output>
-        </div>
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="40" min="1" max="365" step="1" id="recoverySlider" onchange="updateRecovery(this.value)" oninput="recoveryValue.value = this.value">
-          <label for="recoverySlider">recovery time</label>
-          <output id="recoveryValue" class="u-pull-right">40</output>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="radiusSlider" onchange="updateRadius(this.value)" oninput="radiusValue.value = this.value">
-          <label for="radiusSlider">infection radius</label>
-          <output id="radiusValue" class="u-pull-right">20</output>
-        </div>
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="0.01" min="0.0" max="0.5" step="0.01" id="deathSlider" onchange="updateDeath(this.value)" oninput="deathValue.value = this.value">
-          <label for="deathSlider">death rate</label>
-          <output id="deathValue" class="u-pull-right">0.01</output>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="sradiusSlider" onchange="distancingRadius = this.value" oninput="sradiusValue.value = this.value">
-          <label for="sradiusSlider">social distancing radius</label>
-          <output id="sradiusValue" class="u-pull-right">20</output>
-        </div>
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="strengthSlider" onchange="distancingStrength = this.value" oninput="strengthValue.value = this.value">
-          <label for="strengthSlider">social distancing strength</label>
-          <output id="strengthValue" class="u-pull-right">0</output>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="distancingSlider" onchange="updateDistancing(this.value)" oninput="distancingValue.value = this.value">
-          <label for="distancingSlider">travel speed</label>
-          <output id="distancingValue" class="u-pull-right">0</output>
-        </div>
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="20" min="0" max="50" step="1" id="quarantineSlider" onchange="updateQuarantine(this.value)" oninput="quarantineValue.value = this.value">
-          <label for="quarantineSlider">delay from infection to quarantine</label>
-          <output id="quarantineValue" class="u-pull-right">20</output>
-        </div>
-      </div>
-      <div class="row">
-        <div class="one-half column">
-          <input type="range" class="valueSlider" value="200" min="5" max="1000" step="1" id="tickslider" onchange="tickrate = this.value" oninput="ticks.value = this.value">
-          <label for="tickslider">time between simulation steps in ms</label>
-          <output id="ticks" class="u-pull-right">200</output>
-        </div>
-        <div class="one-half column">
-          <button class="u-full-width" type="button" name="stats toggle" onclick="stats = !stats">toggle stats</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="column">
-          <canvas id="chart"></canvas>
-        </div>
+  <div class="container">
+    <div class="row" style="margin-top:3rem;">
+      <div class="column">
+        <h1>Corona simulation</h1>
+        <h3>Introduction</h3>
+        <p>What is going on here: each dot represents a entity, going about their life.</p>
+        <ul style="list-style:none;">
+          <li>this is a healthy entity</li>
+          <li class="inf">infected and spreading the disease</li>
+          <li class="imm">entity is immune, but only for a while</li>
+          <li class="dead">dead entity, rest in peace</li>
+        </ul>
+        <p>People in the big box are part of society, while the smaller box represents quarantined people. Quarantine is
+          being triggered a few days after the infection, because it takes some time to detect an infected person. Have
+          fun playing with this and
+          stay safe!</p>
+        <hr>
+        <h3 id="dayCounter">day: 2</h3>
       </div>
     </div>
-  </body>
-  <script type="text/javascript" src="script_min.js"></script>
 
-  <!--<script src="quadtree.js"></script> <script src="stats.js"></script> <script type="text/javascript" src="script.js"></script>-->
+    <div class="row">
+      <label style="float: left;" for="canvas">simulation</label>
+      <label style="float: right;" for="canvas">quarantine</label>
+    </div>
+
+    <div class="row">
+      <canvas class="u-full-width" id="canvas" width="1000" height="1000"></canvas>
+    </div>
+
+    <div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="1500" min="10" max="5000" step="5" id="agentSlider"
+          onchange="updateAgents(this.value)" oninput="agentValue.value = this.value">
+        <label for="agentSlider">number of agents</label>
+        <output id="agentValue" class="u-pull-right">1500</output>
+      </div>
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="0.1" min="0.01" max="1" step="0.01" id="infectionSlider"
+          oninput="infectionValue.value = this.value; updateInfection(this.value)">
+        <label for="infectionSlider">infection rate</label>
+        <output id="infectionValue" class="u-pull-right">0.1</output>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="10" min="1" max="365" step="1" id="resistanceSlider"
+          oninput="resistanceValue.value = this.value; updateResistance(this.value)">
+        <label for="resistanceSlider">duration of immunity</label>
+        <output id="resistanceValue" class="u-pull-right">10</output>
+      </div>
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="40" min="1" max="365" step="1" id="recoverySlider"
+          oninput="recoveryValue.value = this.value; updateRecovery(this.value)">
+        <label for="recoverySlider">recovery time</label>
+        <output id="recoveryValue" class="u-pull-right">40</output>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="radiusSlider"
+          oninput="radiusValue.value = this.value; updateRadius(this.value)">
+        <label for="radiusSlider">infection radius</label>
+        <output id="radiusValue" class="u-pull-right">20</output>
+      </div>
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="0.01" min="0.0" max="0.5" step="0.01" id="deathSlider"
+          oninput="deathValue.value = this.value; updateDeath(this.value)">
+        <label for="deathSlider">death rate</label>
+        <output id="deathValue" class="u-pull-right">0.01</output>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="20" min="1" max="60" step="1" id="sradiusSlider"
+          oninput="sradiusValue.value = this.value; distancingRadius = this.value">
+        <label for="sradiusSlider">social distancing radius</label>
+        <output id="sradiusValue" class="u-pull-right">20</output>
+      </div>
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="0" min="0" max="1" step="0.01" id="strengthSlider"
+          oninput="strengthValue.value = this.value; distancingStrength = this.value">
+        <label for="strengthSlider">social distancing strength</label>
+        <output id="strengthValue" class="u-pull-right">0</output>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="0.5" min="0" max="1" step="0.01" id="distancingSlider"
+          oninput="distancingValue.value = this.value; updateDistancing(this.value)">
+        <label for="distancingSlider">travel speed</label>
+        <output id="distancingValue" class="u-pull-right">0</output>
+      </div>
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="20" min="0" max="50" step="1" id="quarantineSlider"
+          oninput="quarantineValue.value = this.value; updateQuarantine(this.value)">
+        <label for="quarantineSlider">detection delay</label>
+        <output id="quarantineValue" class="u-pull-right">20</output>
+      </div>
+    </div>
+    <!--<div class="row">
+      <div class="one-half column">
+        <input type="range" class="valueSlider" value="200" min="5" max="1000" step="1" id="tickslider"
+          oninput="ticks.value = this.value; tickrate = this.value">
+        <label for="tickslider">simulation timestep</label>
+        <output id="ticks" class="u-pull-right">200</output>
+      </div>
+      <div class="one-half column">
+        <button class="u-full-width" type="button" name="stats toggle" onclick="stats = !stats">toggle stats</button>
+      </div>
+    </div>-->
+
+    <div class="row">
+      <div class="column">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="quadtree.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>-->
+<!--<script src="stats.js"></script>-->
+<script type="text/javascript" src="script.js"></script>
 
 </html>

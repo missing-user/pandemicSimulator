@@ -1,5 +1,8 @@
 var canvas = document.getElementById("canvas")
-var qcanvas = document.getElementById("qcanvas")
+const qcanvas = {
+	width: canvas.width / 4,
+	height: canvas.height
+}
 var dayCounter = document.getElementById("dayCounter")
 var stats = false
 var actors = []
@@ -9,7 +12,7 @@ var deathRate = 0.01
 var infectionDuration = 40
 var infectionRadius = 20
 var resistanceDuration = 10
-var socialDistancing = 5 //TODO how????
+var travelSpeed = 2.5
 var quarantineDelay = 20
 var distancingRadius = 20
 var distancingStrength = 0
@@ -39,7 +42,7 @@ function updateInfection(input) {
 }
 
 function updateDistancing(input) {
-	socialDistancing = (1 - input) * 5
+	travelSpeed = (input) * 5
 }
 
 function updateRadius(input) {
@@ -69,7 +72,7 @@ function startSimulation() {
 	quarantine = []
 	for (var i = 0; i < agentCount; i++) {
 		actors.push({
-			x: Math.random() * canvas.width,
+			x: Math.random() * (canvas.width - qcanvas.width),
 			y: Math.random() * canvas.height,
 			resistanceTimer: 0,
 			infectionTimer: 0,
@@ -81,10 +84,9 @@ function startSimulation() {
 		})
 	}
 	actors[0].infectionTimer = 1
-	resetStats()
+	//resetStats()
 	clearTimeout(activeTimeout)
 	activeTimeout = window.setTimeout(updateSimulation, tickrate, 1)
-	console.log('sim started with timer: ', activeTimeout);
 }
 
 function updateSimulation(steps) {
@@ -159,14 +161,14 @@ function animate() {
 	for (var i = 0; i < actors.length; i++) {
 		var a = actors[i]
 		//move everyone around
-		a.x += a.vx * socialDistancing
-		a.y += a.vy * socialDistancing
+		a.x += a.vx * travelSpeed
+		a.y += a.vy * travelSpeed
 		a.y = (a.y + canvas.height) % canvas.height
-		a.x = (a.x + canvas.width) % canvas.width
+		a.x = (a.x + (canvas.width - qcanvas.width)) % (canvas.width - qcanvas.width)
 	}
 	requestAnimationFrame(animate)
 	draw(canvas.getContext("2d"))
-	qdraw(qcanvas.getContext("2d"))
+	qdraw(canvas.getContext("2d"))
 	dayCounter.textContent = "day: " + totalTime
 }
 
@@ -196,7 +198,7 @@ function distance() {
 }
 
 function draw(ctx) {
-	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	ctx.clearRect(0, 0, canvas.width - qcanvas.width, canvas.height)
 	ctx.fillStyle = "black"
 	for (var i = 0; i < fatalities.length; i++) {
 		if (!fatalities[i].qDeath) ctx.fillRect(fatalities[i].x - 5, fatalities[i].y - 5, 10, 10);
@@ -227,15 +229,19 @@ function draw(ctx) {
 }
 
 function qdraw(ctx) {
-	ctx.clearRect(0, 0, qcanvas.width, qcanvas.height)
+	ctx.clearRect(canvas.width - qcanvas.width, 0, qcanvas.width, qcanvas.height)
 	for (var i = 0; i < quarantine.length; i++) {
 		ctx.fillStyle = "hsl(" + quarantine[i].infectionTimer * 120 / infectionDuration + ",100%,50%)"
-		ctx.fillRect(Math.floor(((i * 15) % qcanvas.width) / 15) * 15, Math.floor((i * 15) / qcanvas.width) * 15, 10, 10);
+		ctx.fillRect(canvas.width - qcanvas.width + Math.floor(((i * 15) % qcanvas.width) / 15) * 15,
+			Math.floor((i * 15) / qcanvas.width) * 15,
+			10, 10)
 	}
 	ctx.fillStyle = "black"
 	qf = fatalities.filter((el) => el.qDeath);
 	for (var i = 0; i < qf.length; i++) {
-		ctx.fillRect(Math.floor(((i * 15) % qcanvas.width) / 15) * 15, qcanvas.height - (Math.floor((i * 15) / qcanvas.width) * 15), 10, 10);
+		ctx.fillRect(canvas.width - qcanvas.width + Math.floor(((i * 15) % qcanvas.width) / 15) * 15,
+			qcanvas.height - (Math.floor((i * 15) / qcanvas.width) * 15),
+			10, 10)
 	}
 }
 startSimulation()
