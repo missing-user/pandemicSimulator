@@ -1,5 +1,8 @@
 # Pandemic Simulation
+
 > We're all on lockdown, and I need something to do.
+
+Live version can be found at https://jurasic-park.de/pandemicSimulator/
 
  ![Screenshot of the interactive virus simulation](virus_sim_screenshot.png)
 
