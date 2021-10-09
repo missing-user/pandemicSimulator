@@ -29,11 +29,9 @@
           <li class="imm">entity is immune, but only for a while</li>
           <li class="dead">dead entity, rest in peace</li>
         </ul>
-        <p>Entities in the big box are part of society, while the smaller box represents quarantined entities.
-          Quarantine is
-          being triggered a few days after the infection, because it takes some time to detect an infected person. After
-          an entity had an infection, it is immune for some time. Social distancing is implemented as a repulsive force,
-          when entities get to close together.
+        <p>A simple, interactive simulation of how infectious diseases spread across society. Infected entities have a certain probability of infecting others when close enough. When an infection is detected (a set number of days after first contact), the entities are sent to quarantine until they recover. After recovery, entities gain immunity for a while, which can lead to the extinction of the virus, if it spreads too fast and immunity is long enough.
+
+Even though it is heavily simplified, the typical exponential spread at the start of an epidemic can be observed. Parameters like movement speed and social distancing strength, the latter of which was implemented as a simple repulsion force, also impact how the pandemic will evolve.
           <br>
           Have fun and stay safe!
         </p>
